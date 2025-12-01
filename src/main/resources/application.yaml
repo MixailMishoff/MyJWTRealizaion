@@ -1,0 +1,23 @@
+# сгенерировал командой openssl rand -base64 32
+jwt-secret: ceLmqhqu0sEppkH4WAfaFj1J+DJrthRpo2EkV8N/0X8=
+
+spring:
+  application:
+    name: TryingToMakeCorrectRealizationOfJWT
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: root
+    password:
+  h2:
+    console:
+      enabled: true  # Включаем консоль H2 для доступа через браузер
+      path: /h2-console  # URL для доступа к консоли
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update  # или create, create-drop, validate, none
+    show-sql: true  # Показывать SQL в логах (для разработки)
+    properties:
+      hibernate:
+        format_sql: true  # Форматировать SQL в логах

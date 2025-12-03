@@ -31,17 +31,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    /**
-     * Определение функции для регистрации пользователя
-     * Кодирование пароля с использованием Bcrypt
-     * Установка закодированного пароля
-     * Сохранение сущности пользователя в базе данных
-     * Генерация JWT
-     *
-     * @param user {@link User}
-     * @return Ответ, какой JWT создан
-     */
-
     public String register(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -51,20 +40,7 @@ public class UserService {
         return jwtService.generateToken(user.getEmail());
     }
 
-    /**
-     * Вход пользователя
-     * 1. Создание токена аутентификации,
-     * который будет содержать учетные данные для аутентификации
-     * Этот токен используется в качестве
-     * входных данных для процесса аутентификации
-     * 2. Проверка подлинности учетных данных для входа
-     * 3. Если проверка пройдена, это означает, что аутентификация прошла успешно
-     * Сгенерируйте JWT
-     *
-     * @param loginCred {@link UserDTO}
-     * @return {@link String} предоставление JWT токена,
-     * ранее созданного при регистрации
-     */
+
     public UserDetailsInfo login(UserDTO loginCred) {
         try {
             System.out.println("все гуд 1111");
@@ -99,15 +75,9 @@ public class UserService {
         }
         return null;
     }
-    /**
-     * Определение функции для обработки маршрута GET для извлечения
-     * пользовательской информации аутентифицированного пользователя
-     * Дальше идет извлечение электронной почты из контекста безопасности
-     *
-     * @return {@link User} данные о пользователе
-     */
+
     public User getUserInfo() {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findByEmail(email); //.orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

@@ -18,14 +18,7 @@ public class JWTService {
     @Value("${jwt-secret}")
     private String secret;
 
-    /**
-     * Способ подписи и создания JWT с использованием введенного секрета
-     *
-     * @param email {@link User#getEmail()}
-     * @return {@link String} генерация токена по секрету
-     * @throws IllegalArgumentException некорректность аргументов
-     * @throws JWTCreationException     проблема сборки jwt
-     */
+
     public String generateToken(String email) throws IllegalArgumentException, JWTCreationException {
         return JWT.create()
                 .withSubject("AllMine")
@@ -35,15 +28,6 @@ public class JWTService {
                 .withIssuer("MIQ")
                 .sign(Algorithm.HMAC256(secret));
     }
-
-    /**
-     * Способ проверки JWT,
-     * а затем декодирования и извлечения электронной почты пользователя,
-     * хранящейся в payload токена
-     *
-     * @param token {@link String} токен
-     * @return {@link String} email пользователя
-     */
 
     public String validateTokenAndRetrieveSubject(String token) throws JWTVerificationException, JsonProcessingException{
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))

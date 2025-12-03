@@ -11,12 +11,14 @@ spring:
     password:
   h2:
     console:
-      enabled: true  # Включаем консоль H2 для доступа через браузер
-      path: /h2-console  # URL для доступа к консоли
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update  # или create, create-drop, validate, none
+      ddl-auto: update
     show-sql: true  # Показывать SQL в логах (для разработки)
     properties:
       hibernate:

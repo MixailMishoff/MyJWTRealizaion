@@ -20,19 +20,6 @@ public class JWTFilter extends OncePerRequestFilter {
     private final CustomUserDetailService customUserDetailService;
     private final JWTService jwtService;
 
-    /**
-     * Извлекает заголовок Authorization из Header
-     * Проверяет присутствует ли заголовок в Bearer token
-     * Если присутствует, то извлекаем email и создаем токен
-     * так же меняет настройку аутентификации в контексте безопасности
-     * с использованием созданного токена
-     *
-     * @param request
-     * @param response
-     * @param filterChain
-     * @throws ServletException
-     * @throws IOException
-     */
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

@@ -16,7 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,33 +26,33 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable()) // Полностью отключаем CSRF
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // Разрешаем ВСЕ запросы
-                )
-                .headers(headers -> headers
-                        .frameOptions(frame -> frame.disable()) // Разрешаем iframe
-                );
 //        http
-//                .csrf(csrf -> csrf
-//                        .ignoringRequestMatchers("/h2-console/**") // Отключаем CSRF для H2 Console
-//                        .disable())
+//                .csrf(csrf -> csrf.disable()) // Полностью отключаем CSRF
 //                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/**").permitAll()
-//                        .requestMatchers("/h2-console/**").permitAll()
-//                        .anyRequest().authenticated()
+//                        .anyRequest().permitAll() // Разрешаем ВСЕ запросы
 //                )
-//                .exceptionHandling(exception -> exception
-//                        .authenticationEntryPoint(
-//                                (request, response, authException) ->
-//                                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
-//                        )
-//                )
-//                .sessionManagement(session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .headers(headers -> headers
+//                        .frameOptions(frame -> frame.disable()) // Разрешаем iframe
 //                );
-//
+        http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**") // Отключаем CSRF для H2 Console
+                        .disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(
+                                (request, response, authException) ->
+                                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+                        )
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
+
 //        http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
@@ -63,13 +62,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-//        authProvider.setUserDetailsService(uds);
-//        authProvider.setPasswordEncoder(passwordEncoder());
-//        return authProvider;
-//    }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(uds);
+        authProvider.setPasswordEncoder(passwordEncoder()   );
+        return authProvider;
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {

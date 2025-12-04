@@ -30,7 +30,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public String register(User user) {
+    public String register(UserDTO userdto) {
+
+        User user = User.builder()
+                .email(userdto.getEmail())
+                .password(userdto.getPassword())
+                .build();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user = userRepository.save(user);
